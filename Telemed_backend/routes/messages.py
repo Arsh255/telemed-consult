@@ -13,3 +13,5 @@ def add_message(message: Message):
 
     result = messages_collection.insert_one(message.dict())
     return {"message": "Message added successfully", "id": str(result.inserted_id)}
+
+

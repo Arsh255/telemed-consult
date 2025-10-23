@@ -10,5 +10,5 @@ DB_NAME = os.getenv("DB_NAME", "telemed")
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 
-# consultations_collection = db["consultations"]
+consultations_collection = db["consultations"]
 messages_collection = db["messages"]
