@@ -14,4 +14,16 @@ def add_message(message: Message):
     result = messages_collection.insert_one(message.dict())
     return {"message": "Message added successfully", "id": str(result.inserted_id)}
 
+@router.get("/consultations/{consultation_id}/messages")
+def get_messages(consultation_id: str, role: Optional[str] = Query(None, regex="^(doctor|patient)$")):
+    query = {"consultation_id": consultation_id}
+    if role:
+        query["role"] = role
 
+    messages = list(messages_collection.find(query).sort("timestamp", 1))
+    if not messages:
+        raise HTTPException(status_code=404, detail="No messages found for this consultation")
+
+    for msg in messages:
+        msg["_id"] = str(msg["_id"])
+    return {"consultation_id": consultation_id, "messages": messages}
